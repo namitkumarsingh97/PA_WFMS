@@ -1,0 +1,20 @@
+# Node modules
+node_modules/
+
+# Environment files
+.env
+
+# Build files
+build/
+dist/
+
+# IDE files
+.idea/
+.vscode/
+
+# Logs
+_.log
+npm-debug.log_
+
+# Dependencies installed via npm
+package-lock.json
