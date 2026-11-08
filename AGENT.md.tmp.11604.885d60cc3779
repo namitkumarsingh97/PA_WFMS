@@ -1,0 +1,143 @@
+# PA_WFMS - Workflow Management System
+
+## Project Overview
+A React-based Workflow Management System built with Material UI, React Router, and React Calendar. Features include attendance tracking, task management, and a dashboard.
+
+## Tech Stack
+- **Frontend**: React 18.2.0, React Router DOM 7.1.5
+- **UI Framework**: Material UI (MUI) 5.13.3 (@mui/material, @mui/icons-material, @emotion/react, @emotion/styled)
+- **Calendar**: react-calendar 5.1.0
+- **Build Tool**: react-scripts 5.0.1
+- **Language**: JavaScript (ES6+)
+
+## Project Structure
+```
+src/
+├── index.js                 # Entry point
+├── App.js                   # Main app with routing
+├── styles.css               # Global styles
+├── assets/
+│   └── Providence_Adwork_Light_Logo.png
+├── components/
+│   ├── Navbar.js            # Top navigation bar
+│   ├── BottomNav.js         # Bottom navigation (mobile)
+│   ├── LoginPage.js         # Login page (incomplete)
+│   ├── PostCards.js         # Dashboard cards
+│   └── SubComponent/
+│       ├── Attendence/
+│       │   ├── Attendence.js        # Attendance page wrapper
+│       │   └── AttendenceCalender.js # Calendar component
+│       └── Task/
+│           └── TaskManager.js       # Kanban-style task board
+├── pages/
+│   └── Home.js              # Dashboard home page
+└── data/
+    └── attendanceData.js    # Static attendance data (30 days)
+```
+
+## Features Implemented
+
+### 1. Navigation & Layout
+- **Navbar**: Top app bar with menu, logo placeholder, user avatar dropdown (Profile, Account, Dashboard, Logout)
+- **BottomNav**: Fixed bottom navigation for mobile (Recents, Dashboard, Tasks)
+- **Routing**: React Router with 3 routes: `/`, `/attendence`, `/task`
+
+### 2. Home Dashboard (`/`)
+- Grid of PostCards for: Effort/Attendance Calendar, Tasks, CDP, Meeting, Creative Team, Attendance/Defaulters
+- Click navigation to Attendance and Tasks pages
+
+### 3. Attendance Calendar (`/attendence`)
+- Monthly calendar view using react-calendar
+- Custom tile content showing attendance status (P, WOFF, L-APR)
+- Date selection shows detailed attendance (In Time, Out Time, Status)
+- Static data for 30 days (hardcoded month)
+- "Back to Home" button
+
+### 4. Task Manager (`/task`)
+- Kanban-style board with 4 columns: ToDo, In Progress, On Hold, Done
+- Sprint selector (Sprint 1, Sprint 2) with hardcoded date ranges
+- Task cards showing title, description, assignee
+- Static task data (4 tasks across 2 sprints)
+- "Back to Home" button
+
+### 5. PostCards Component
+- Reusable card component with image, title
+- Used on Home page for feature navigation
+
+## Issues to Fix (Production Readiness)
+
+### Critical Issues
+1. **LoginPage.js** - Non-functional: duplicate Employee ID fields, no password field, no form handling, no auth logic
+2. **Home.js** - PostCards missing required `image` and `alt` props (will crash)
+3. **PostCards.js** - Expects `image` and `alt` props but doesn't handle missing values
+4. **Navbar.js** - Logo images commented out, hardcoded user name, broken avatar URL
+5. **BottomNav.js** - Navigation doesn't actually route anywhere
+6. **Attendance Calendar** - Only works for one hardcoded month, no month/year navigation
+7. **TaskManager** - Hardcoded 2023 dates, no persistence, no CRUD operations
+7. **No authentication flow** - No protected routes, no login state management
+8. **No state management** - All data is static/local
+
+### Medium Issues
+9. **Package dependencies** - react-scripts 5.0.1 may have issues with React 18
+10. **No error boundaries** - Crashes will break entire app
+11. **No loading states** - UX issues for async operations
+12. **No responsive design testing** - Fixed pixel values in CSS
+13. **Accessibility** - Missing ARIA labels, semantic HTML issues
+14. **Code quality** - Console.logs, inconsistent formatting, unused imports
+
+### Production Requirements
+15. **Environment configuration** - No .env support
+16. **Build optimization** - No code splitting, bundle analysis
+17. **Testing** - No unit/integration tests
+18. **CI/CD** - No pipeline configuration
+19. **Docker** - No containerization
+20. **Documentation** - No README, API docs, component docs
+
+## API Contracts (Future)
+- `POST /api/auth/login` - Employee login
+- `GET /api/attendance/:month/:year` - Attendance data
+- `GET /api/tasks?sprint=:id` - Task data
+- `POST /api/tasks` - Create task
+- `PUT /api/tasks/:id` - Update task
+- `DELETE /api/tasks/:id` - Delete task
+
+## Data Models
+### Attendance Entry
+```js
+{
+  monthDay: number,    // 1-31
+  weekDay: string,     // "Mon", "Tue", etc.
+  tag: string,         // "P", "WOFF", "L-APR", etc.
+  inTime: string,      // "11:15AM"
+  outTime: string      // "7:15PM"
+}
+```
+
+### Task
+```js
+{
+  id: number,
+  title: string,
+  description: string,
+  status: "ToDo" | "In Progress" | "On Hold" | "Done",
+  sprint: string,
+  assignedTo: string,
+  fromDate: string,    // ISO date
+  toDate: string       // ISO date
+}
+```
+
+## Routes
+| Path | Component | Description |
+|------|-----------|-------------|
+| `/` | Home | Dashboard with feature cards |
+| `/attendence` | Attendence | Attendance calendar view |
+| `/task` | TaskManager | Kanban task board |
+
+## Known Limitations
+- Single month of attendance data (no persistence)
+- Static task data (no backend)
+- No authentication/authorization
+- No responsive breakpoints tested
+- No error handling for missing assets
+- Hardcoded user info in Navbar

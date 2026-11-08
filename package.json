@@ -1,24 +1,25 @@
 {
-  "name": "lai-wfms-001",
+  "name": "pa-wfms-001",
   "version": "1.0.0",
-  "description": "",
-  "keywords": [],
+  "description": "Providence Adwork Workflow Management System",
+  "keywords": ["react", "workflow", "attendance", "task-management"],
   "main": "src/index.js",
   "dependencies": {
-    "@emotion/react": "11.11.0",
-    "@emotion/styled": "11.11.0",
-    "@mui/icons-material": "5.11.16",
-    "@mui/material": "5.13.3",
-    "gulp": "5.0.0",
-    "loader-utils": "3.2.1",
-    "react": "18.2.0",
-    "react-dom": "18.2.0",
-    "react-router-dom": "7.1.5",
-    "react-scripts": "^3.0.1"
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.15",
+    "@mui/material": "^5.15.15",
+    "react": "^18.3.1",
+    "react-calendar": "^5.0.0",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.23.0",
+    "react-scripts": "5.0.1"
   },
   "devDependencies": {
-    "@babel/runtime": "7.13.8",
-    "typescript": "4.1.3"
+    "@babel/runtime": "^7.24.5",
+    "ajv": "^8.12.0",
+    "ajv-keywords": "^5.1.0",
+    "typescript": "^5.4.5"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -26,10 +27,16 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "browserslist": [
-    ">0.2%",
-    "not dead",
-    "not ie <= 11",
-    "not op_mini all"
-  ]
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
