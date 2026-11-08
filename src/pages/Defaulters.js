@@ -25,17 +25,17 @@ const monthOptions = () => {
 
 export default function Defaulters() {
   const notify = useToast();
-  const { db, decideLeave, userName } = useData();
+  const { db, decideLeave, userName, activeUsers } = useData();
   const [tab, setTab] = useState(0);
   const [month, setMonth] = useState(monthKey(new Date()));
   const [onlyDefaulters, setOnlyDefaulters] = useState(true);
   const options = monthOptions();
 
   const rows = useMemo(
-    () => db.users.map((u) => ({ user: u, s: summarizeMonth(db.attendance[u.id], month) }))
+    () => activeUsers.map((u) => ({ user: u, s: summarizeMonth(db.attendance[u.id], month) }))
       .filter((r) => !onlyDefaulters || isDefaulter(r.s))
       .sort((a, b) => b.s.late + b.s.absent * 3 - (a.s.late + a.s.absent * 3)),
-    [db, month, onlyDefaulters]
+    [db, activeUsers, month, onlyDefaulters]
   );
   const pending = db.leaves.filter((l) => l.status === "Pending");
 

@@ -19,6 +19,9 @@ export function AuthProvider({ children }) {
     return c && c.active ? s.userId : null;
   });
 
+  // a disabled or removed account loses its session immediately
+  const activeId = creds[userId]?.active ? userId : null;
+
   const persist = useCallback((next) => {
     save(CRED_KEY, next);
     setCreds(next);
@@ -72,10 +75,10 @@ export function AuthProvider({ children }) {
 
   const value = useMemo(
     () => ({
-      userId, isAuthenticated: !!userId, login, logout, changePassword,
+      userId: activeId, isAuthenticated: !!activeId, login, logout, changePassword,
       credentials: creds, emailTaken, addCredential, setPasswordFor, setActive, resetCredentials,
     }),
-    [userId, creds, login, logout, changePassword, emailTaken, addCredential, setPasswordFor, setActive, resetCredentials]
+    [activeId, creds, login, logout, changePassword, emailTaken, addCredential, setPasswordFor, setActive, resetCredentials]
   );
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

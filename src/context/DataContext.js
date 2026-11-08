@@ -25,7 +25,7 @@ const initDb = () => {
 };
 
 export function DataProvider({ children }) {
-  const { userId, addCredential, emailTaken, setPasswordFor, setActive, resetCredentials } = useAuth();
+  const { userId, credentials, addCredential, emailTaken, setPasswordFor, setActive, resetCredentials } = useAuth();
   const [db, setDb] = useState(initDb);
 
   useEffect(() => {
@@ -145,7 +145,8 @@ export function DataProvider({ children }) {
   const userName = useCallback((id) => db.users.find((u) => u.id === id)?.name || "Unassigned", [db.users]);
 
   const isManager = currentUser?.role === "manager";
-  const value = useMemo(() => ({ db, currentUser, isManager, userName, ...api }), [db, currentUser, isManager, userName, api]);
+  const activeUsers = useMemo(() => db.users.filter((u) => credentials[u.id]?.active !== false), [db.users, credentials]);
+  const value = useMemo(() => ({ db, currentUser, isManager, activeUsers, userName, ...api }), [db, currentUser, isManager, activeUsers, userName, api]);
   return <DataContext.Provider value={value}>{children}</DataContext.Provider>;
 }
 

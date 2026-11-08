@@ -13,7 +13,7 @@ import logo from "../assets/Providence_Adwork_Light_Logo.png";
 import config from "../config";
 import { useAuth } from "../context/AuthContext";
 import { useData } from "../context/DataContext";
-import { navFor } from "../utils/nav";
+import { navFor, useSection } from "../utils/nav";
 import { daysBetween, fmtDate, fmtTime, toKey } from "../utils/date";
 import { sectionColors } from "../theme";
 
@@ -28,6 +28,7 @@ export default function Navbar() {
   const [userAnchor, setUserAnchor] = useState(null);
   const [bellAnchor, setBellAnchor] = useState(null);
   const items = navFor(currentUser);
+  const section = useSection();
 
   const notifications = useMemo(() => {
     const today = toKey(new Date());
@@ -59,7 +60,7 @@ export default function Navbar() {
 
   return (
     <>
-      <AppBar position="sticky" sx={{ background: sectionColors.home.gradient }} elevation={3}>
+      <AppBar position="sticky" sx={{ background: section.color.gradient, transition: "background .3s" }} elevation={3}>
         <Toolbar sx={{ gap: 1, minHeight: { xs: 56, md: 64 } }}>
           <IconButton color="inherit" edge="start" aria-label="Open menu" onClick={() => setDrawer(true)} sx={{ display: { lg: "none" } }}>
             <MenuIcon />
