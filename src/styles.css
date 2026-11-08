@@ -1,5 +1,92 @@
-* {
+:root {
+  --bottom-nav: 56px;
+}
+
+* { box-sizing: border-box; }
+
+html, body, #root { min-height: 100%; }
+
+body {
   margin: 0;
+  background: #f1f5f9;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+.main-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 16px 12px 24px;
+  min-height: calc(100vh - 64px);
+}
+
+@media (min-width: 600px) { .main-content { padding: 24px 24px 32px; } }
+
+/* leave room for the fixed bottom navigation on small screens */
+@media (max-width: 899.95px) {
+  .main-content { padding-bottom: calc(var(--bottom-nav) + 24px + env(safe-area-inset-bottom)); }
+}
+
+/* react-calendar */
+.pa-calendar.react-calendar {
+  width: 100%;
+  border: 0;
+  font-family: inherit;
+  background: transparent;
+}
+.pa-calendar .react-calendar__navigation button { font-weight: 700; border-radius: 10px; min-width: 40px; }
+.pa-calendar .react-calendar__navigation button:enabled:hover { background: #cffafe; }
+.pa-calendar .react-calendar__month-view__weekdays { font-size: .72rem; text-transform: uppercase; font-weight: 700; color: #64748b; }
+.pa-calendar .react-calendar__month-view__weekdays abbr { text-decoration: none; }
+.pa-calendar .react-calendar__tile {
+  position: relative;
   padding: 0;
-  /* background-color: rgb(184, 204, 228); */
+  height: clamp(46px, 11vw, 74px);
+  border-radius: 12px;
+  border: 2px solid transparent;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 2px;
+  padding-top: 6px;
+}
+.pa-calendar .react-calendar__tile abbr { font-size: .85rem; font-weight: 600; }
+.pa-calendar .react-calendar__tile:enabled:hover { background: #ecfeff; }
+.pa-calendar .react-calendar__tile--now { border-color: #0891b2; }
+.pa-calendar .react-calendar__tile--active { border-color: #0e4959; }
+.pa-calendar .react-calendar__month-view__days__day--neighboringMonth { opacity: .35; }
+.pa-calendar .day-tag {
+  font-size: .62rem;
+  font-weight: 700;
+  line-height: 1;
+  padding: 3px 5px;
+  border-radius: 999px;
+}
+@media (max-width: 480px) { .pa-calendar .day-tag { font-size: .55rem; padding: 2px 3px; } }
+
+/* kanban */
+.kanban {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@media (max-width: 1100px) { .kanban { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .kanban { grid-template-columns: minmax(0, 1fr); } }
+
+.kanban-col { min-height: 140px; transition: background .15s, outline-color .15s; outline: 2px dashed transparent; }
+.kanban-col.drag-over { outline-color: currentColor; background: rgba(255,255,255,.9); }
+
+.table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+.card-hover { transition: transform .18s ease, box-shadow .18s ease; }
+.card-hover:hover { transform: translateY(-3px); box-shadow: 0 12px 28px -10px rgba(15,23,42,.35) !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+@media print {
+  header, nav, .no-print { display: none !important; }
 }
