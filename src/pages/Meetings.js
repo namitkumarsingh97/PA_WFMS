@@ -20,7 +20,7 @@ const blank = (userId) => ({ title: "", date: toKey(new Date()), time: "10:00", 
 
 export default function Meetings() {
   const notify = useToast();
-  const { db, currentUser, userName, meetings, isManager } = useData();
+  const { db, currentUser, userName, meetings, isManager, activeUsers } = useData();
   const [tab, setTab] = useState(0);
   const [form, setForm] = useState(null);
   const [delId, setDelId] = useState(null);
@@ -76,7 +76,7 @@ export default function Meetings() {
                   {m.attendees.map((a) => <Chip key={a} size="small" label={userName(a)} sx={{ bgcolor: C.light, color: C.dark }} />)}
                 </Stack>
                 <Stack direction="row" spacing={1}>
-                  {m.status === "Scheduled" && m.date >= today && (
+                  {m.status === "Scheduled" && (
                     <>
                       <Button size="small" variant="outlined" color="success" onClick={() => { meetings.update(m.id, { status: "Completed" }); notify("Marked as completed."); }}>Complete</Button>
                       {isManager && <Button size="small" variant="outlined" color="error" onClick={() => { meetings.update(m.id, { status: "Cancelled" }); notify("Meeting cancelled.", "info"); }}>Cancel</Button>}
@@ -101,7 +101,7 @@ export default function Meetings() {
               <TextField type="number" label="Minutes" value={form.duration} onChange={set("duration")} inputProps={{ min: 5, step: 5 }} />
             </Box>
             <TextField label="Location / link" value={form.location} onChange={set("location")} />
-            <Autocomplete multiple options={db.users.map((u) => u.id)} getOptionLabel={userName} value={form.attendees}
+            <Autocomplete multiple options={db.users.filter((u) => activeUsers.includes(u) || form.attendees.includes(u.id)).map((u) => u.id)} getOptionLabel={userName} value={form.attendees}
               onChange={(_, v) => setForm((f) => ({ ...f, attendees: v }))}
               renderInput={(p) => <TextField {...p} label="Attendees" />} />
             <TextField label="Agenda" value={form.agenda} onChange={set("agenda")} multiline minRows={2} />

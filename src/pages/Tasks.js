@@ -29,7 +29,7 @@ const blank = (userId, sprint) => ({
 
 export default function Tasks() {
   const notify = useToast();
-  const { db, currentUser, userName, tasks, isManager } = useData();
+  const { db, currentUser, userName, tasks, isManager, activeUsers } = useData();
   const [sprint, setSprint] = useState("All");
   const [assignee, setAssignee] = useState("all");
   const [q, setQ] = useState("");
@@ -64,7 +64,7 @@ export default function Tasks() {
 
   return (
     <Box>
-      <PageHeader title="Tasks" subtitle="Sprint board — drag cards between columns" color={C} icon={TaskAltIcon}
+      <PageHeader title="Tasks" subtitle="Sprint board — drag cards between columns, or use the status menu on touch screens" color={C} icon={TaskAltIcon}
         actions={<Button variant="contained" color="secondary" startIcon={<AddIcon />} onClick={() => setForm(blank(currentUser.id, sprint === "All" ? "Sprint 2" : sprint))}>New task</Button>} />
 
       <Card sx={{ mb: 2 }}>
@@ -144,7 +144,7 @@ export default function Tasks() {
               <TextField select label="Status" value={form.status} onChange={set("status")}>{COLUMNS.map((c) => <MenuItem key={c.key} value={c.key}>{c.key}</MenuItem>)}</TextField>
               <TextField select label="Priority" value={form.priority} onChange={set("priority")}>{["High", "Medium", "Low"].map((p) => <MenuItem key={p} value={p}>{p}</MenuItem>)}</TextField>
               <TextField select label="Sprint" value={form.sprint} onChange={set("sprint")}>{SPRINTS.map((s) => <MenuItem key={s} value={s}>{s}</MenuItem>)}</TextField>
-              <TextField select label="Assignee" value={form.assignedTo} onChange={set("assignedTo")}>{db.users.map((u) => <MenuItem key={u.id} value={u.id}>{u.name}</MenuItem>)}</TextField>
+              <TextField select label="Assignee" value={form.assignedTo} onChange={set("assignedTo")}>{db.users.filter((u) => activeUsers.includes(u) || u.id === form.assignedTo).map((u) => <MenuItem key={u.id} value={u.id}>{u.name}</MenuItem>)}</TextField>
               <TextField type="date" label="From" value={form.fromDate} onChange={set("fromDate")} InputLabelProps={{ shrink: true }} required />
               <TextField type="date" label="To" value={form.toDate} onChange={set("toDate")} InputLabelProps={{ shrink: true }} required />
             </Box>

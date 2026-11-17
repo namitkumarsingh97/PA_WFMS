@@ -25,7 +25,7 @@ const blank = (owner) => ({ title: "", type: "Banner", client: "", priority: "Me
 
 export default function Creative() {
   const notify = useToast();
-  const { db, currentUser, userName, creative, isManager } = useData();
+  const { db, currentUser, userName, creative, isManager, activeUsers } = useData();
   const [form, setForm] = useState(null);
   const [delId, setDelId] = useState(null);
   const [type, setType] = useState("All");
@@ -111,7 +111,7 @@ export default function Creative() {
               <TextField select label="Type" value={form.type} onChange={set("type")}>{TYPES.map((t) => <MenuItem key={t} value={t}>{t}</MenuItem>)}</TextField>
               <TextField select label="Priority" value={form.priority} onChange={set("priority")}>{["High", "Medium", "Low"].map((t) => <MenuItem key={t} value={t}>{t}</MenuItem>)}</TextField>
               <TextField select label="Stage" value={form.stage} onChange={set("stage")}>{STAGES.map((s) => <MenuItem key={s.key} value={s.key}>{s.key}</MenuItem>)}</TextField>
-              <TextField select label="Owner" value={form.owner} onChange={set("owner")}>{db.users.map((u) => <MenuItem key={u.id} value={u.id}>{u.name}</MenuItem>)}</TextField>
+              <TextField select label="Owner" value={form.owner} onChange={set("owner")}>{db.users.filter((u) => activeUsers.includes(u) || u.id === form.owner).map((u) => <MenuItem key={u.id} value={u.id}>{u.name}</MenuItem>)}</TextField>
               <TextField type="date" label="Due" value={form.due} onChange={set("due")} InputLabelProps={{ shrink: true }} required />
             </Box>
             <TextField label="Brief" value={form.brief} onChange={set("brief")} multiline minRows={2} />

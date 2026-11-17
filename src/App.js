@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useEffect } from "react";
 import { CssBaseline, ThemeProvider, Box, CircularProgress } from "@mui/material";
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import "./styles.css";
@@ -10,6 +10,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import Navbar from "./components/Navbar";
 import BottomNav from "./components/BottomNav";
 import { RequireAuth } from "./components/common";
+import { useSection } from "./utils/nav";
 
 const Login = lazy(() => import("./pages/Login"));
 const Home = lazy(() => import("./pages/Home"));
@@ -31,6 +32,11 @@ const Loading = () => (
 );
 
 function Shell() {
+  const section = useSection();
+  useEffect(() => {
+    document.title = `${section.label} · PA WFMS`;
+    document.querySelector('meta[name="theme-color"]')?.setAttribute("content", section.color.dark);
+  }, [section]);
   return (
     <>
       <Navbar />
@@ -52,7 +58,7 @@ export default function App() {
         <ToastProvider>
           <AuthProvider>
             <DataProvider>
-              <BrowserRouter>
+              <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
                 <Suspense fallback={<Loading />}>
                   <Routes>
                     <Route path="/login" element={<Login />} />

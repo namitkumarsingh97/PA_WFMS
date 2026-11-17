@@ -6,6 +6,7 @@ import GroupsIcon from "@mui/icons-material/Groups";
 import BrushIcon from "@mui/icons-material/Brush";
 import GppMaybeIcon from "@mui/icons-material/GppMaybe";
 import BadgeIcon from "@mui/icons-material/Badge";
+import { useLocation } from "react-router-dom";
 import { sectionColors } from "../theme";
 
 export const NAV_ITEMS = [
@@ -20,3 +21,10 @@ export const NAV_ITEMS = [
 ];
 
 export const navFor = (user) => NAV_ITEMS.filter((n) => !n.managerOnly || user?.role === "manager");
+
+// The nav entry (label + colour) for the current route; profile/account/404 fall back to home.
+export function useSection() {
+  const { pathname } = useLocation();
+  const hit = NAV_ITEMS.find((n) => n.path !== "/" && pathname.startsWith(n.path));
+  return hit || NAV_ITEMS[0];
+}
